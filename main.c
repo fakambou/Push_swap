@@ -6,7 +6,7 @@
 /*   By: fakambou <fakambou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:27:55 by fakambou          #+#    #+#             */
-/*   Updated: 2025/02/28 17:32:03 by fakambou         ###   ########.fr       */
+/*   Updated: 2025/03/13 21:24:29 by fakambou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,43 @@
 
 int	main(int ac, char**av)
 {
-	int	i;
+	int		i;
+	t_stack	*a;
+	t_stack	*b;
+	t_push	push;
+	long	num;
 
-	i = 1;
-	t_stack stack;
-	t_push push;
-	if (!av[1][0] && ac == 2)
-		ft_error("the argument should not be empty");
+	i = 0;
+	b = NULL;
+	a = NULL;
 	if (ac < 2)
-	{
-		return(ft_printf("insert the correct number of arguments"), 1);
-	}
+		ft_error_void("insert the correct number of arguments");
+	if (!av[1][0] && ac == 2)
+		ft_error_void("the argument should not be empty");
 	split_arg(&push, av);
-	while (av[i])
+	while (i < push.length)
 	{
+		num = push.tab_int[i];
 		check_number(&push);
 		check_double(&push);
+		init_node((int)num, &a);
 		i++;
 	}
-	init_node(&push, &stack);
-	if(push.tab_number)
-		free_arg(push.tab_number);
-	if(push.tab_int)
-		free(push.tab_int);
+	push_swap(a, b);
+	free_arg(push.tab_number);
+	free(push.tab_int);
+}
+
+void	push_swap(t_stack *a, t_stack *b)
+{
+	if (!stack_sorted(a))
+	{
+		if (stack_len(a) == 2)
+			sa(&a);
+		else if (stack_len(a) == 3)
+			sort_three(&a);
+		else
+			sort_stack(&a, &b);
+	}
+	free_stack(a);
 }
